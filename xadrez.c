@@ -1,44 +1,69 @@
 #include <stdio.h>
 
-int main() {
+void movimentoTorre(int n) {               // imprime "Direita" n vezes (recursivo)
+    if (n <= 0) return;
+    printf("Direita\n");
+    movimentoTorre(n - 1);
+}
+
+// Bispo: recursivo + loops aninhados
+// Externo = vertical ("Cima"), Interno = horizontal ("Direita")
+void movimentoBispo(int n) {
+    if (n <= 0) return;
+
+    for (int v = 0; v < 1; v++) {          // passo vertical
+        printf("Cima\n");
+        for (int h = 0; h < 1; h++) {      // passo horizontal
+            printf("Direita\n");
+        }
+    }
+    movimentoBispo(n - 1);
+}
+
+void movimentoRainha(int n) {              // imprime "Esquerda" n vezes (recursivo)
+    if (n <= 0) return;
+    printf("Esquerda\n");
+    movimentoRainha(n - 1);
+}
+
+int main(void) {
     int Torre  = 5;
     int Bispo  = 5;
     int Rainha = 8;
-    int L      = 1; // apenas 1 "L" como pede o desafio
-    int Casa;
 
-    // TORRE — FOR
-    for (int i = 1; i <= Torre; i++) {
-        printf("Direita\n");
-    }
+    // TORRE — recursão
+    movimentoTorre(Torre);
 
-    // BISPO — WHILE
-    int i = 1;
-    while (i <= Bispo) {
-        printf("Cima Direita\n"); // sem vírgula
-        i++;
-    }
-
-    // RAINHA — DO-WHILE
-    i = 1;
-    do {
-        printf("Esquerda\n");
-        i++;
-    } while (i <= Rainha);
-
-    // linha em branco separando o Cavalo
+    // linha em branco separando peças
     printf("\n");
 
-    // CAVALO — FOR (L) + WHILE (casas do L)
-    for (int l = 1; l <= L; l++) {
-        Casa = 1;
-        while (Casa <= 3) {
-            if (Casa == 1 || Casa == 2) {
-                printf("Baixo\n");
-            } else { // Casa == 3
-                printf("Esquerda\n");
+    // BISPO — recursão + loops aninhados
+    movimentoBispo(Bispo);
+
+    // linha em branco separando peças
+    printf("\n");
+
+    // RAINHA — recursão
+    movimentoRainha(Rainha);
+
+    // linha em branco separando peças
+    printf("\n");
+
+    // CAVALO — loops complexos (for + while, múltiplas condições)
+    int L = 1;          // apenas um "L" como pede o desafio mestre
+    for (int l = 0; l < L; l++) {   // controla quantos "L"
+        int cima = 0, direita = 0;
+        while (1) {
+            if (cima < 2) {         // duas casas para cima
+                printf("Cima\n");
+                cima++;
+                continue;
             }
-            Casa++;
+            if (direita < 1) {      // uma casa para a direita
+                printf("Direita\n");
+                direita++;
+            }
+            if (cima == 2 && direita == 1) break; // L completo
         }
     }
 
